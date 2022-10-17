@@ -1,7 +1,19 @@
+
 export function Login(){
-    const onSubmit = () => {'null'}
+
+    interface LoginForm{
+        email: string;
+        password: string;
+    }
+    const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email');
+        const password = formData.get('password');
+        console.log(email,password)
+    }
     return (
-        <form noValidate onSubmit= {() =>{onSubmit()}}>
+        <form noValidate onSubmit= {onSubmit}>
             <div className="form-floating m-2">
                 <input 
                     type="text" 
