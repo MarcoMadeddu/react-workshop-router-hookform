@@ -1,3 +1,3 @@
 export function LosPassword(){
-    return <p>Register Works</p>
+    return <p>Lost Password Works</p>
 }
