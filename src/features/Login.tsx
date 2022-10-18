@@ -22,10 +22,11 @@ export function Login(){
                 <input 
                     type="text" 
                     id = "email-ctrl"
-                    className = "form-control"
+                    className = { (isSubmitted && errors.email && errors.email.type) ? "border border-danger form-control" : 'form-control'}
                     {...register('email',{required: true,pattern: EMAIL_REGEXP})}
                 />
-                 <label htmlFor="email-ctrl">Email address</label>
+                 <label htmlFor="email-ctrl"
+                 >Email address</label>
                  {isSubmitted && errors.email && errors.email.type === "required" && (
                     <span role="alert">This is required</span>
                 )}
@@ -40,7 +41,7 @@ export function Login(){
                 <input 
                     type="password" 
                     id = "password-ctrl"
-                    className="form-control"
+                    className = { (isSubmitted && errors.password) ? "border border-danger form-control" : 'form-control'}
                     {...register('password',{required: true})}
                 />
                 <label htmlFor="password-ctrl">Password</label>
