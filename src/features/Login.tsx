@@ -1,3 +1,4 @@
+import {useForm} from 'react-hook-form';
 
 export function Login(){
 
@@ -5,23 +6,32 @@ export function Login(){
         email: string;
         password: string;
     }
-    const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const email = formData.get('email');
-        const password = formData.get('password');
-        console.log(email,password)
+
+    const {register, handleSubmit, formState: { errors, isSubmitted }} = useForm<LoginForm>({
+        mode: 'onChange'
+    })
+
+    const onSubmit = (data: LoginForm) => {
+        console.log(data)
     }
+
+    const EMAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return (
-        <form noValidate onSubmit= {onSubmit}>
+        <form noValidate onSubmit= {handleSubmit(onSubmit)}>
             <div className="form-floating m-2">
                 <input 
                     type="text" 
                     id = "email-ctrl"
-                    name  = "email"
                     className = "form-control"
+                    {...register('email',{required: true,pattern: EMAIL_REGEXP})}
                 />
                  <label htmlFor="email-ctrl">Email address</label>
+                 {isSubmitted && errors.email && errors.email.type === "required" && (
+                    <span role="alert">This is required</span>
+                )}
+                {isSubmitted && errors.email && errors.email.type === "pattern" && (
+                <span role="alert">This is not an email</span>
+                )}
             </div>
 
            
@@ -30,10 +40,13 @@ export function Login(){
                 <input 
                     type="password" 
                     id = "password-ctrl"
-                    name="password"
                     className="form-control"
+                    {...register('password',{required: true})}
                 />
                 <label htmlFor="password-ctrl">Password</label>
+                {isSubmitted && errors.password && (
+                    <span role="alert">This is required</span>
+                )}
             </div>
             <button className="btn btn-primary">Login</button>
         </form>
